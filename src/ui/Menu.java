@@ -37,10 +37,11 @@ public class Menu {
     }
 
     // hàm check xem người dùng có muốn tiếp tục không 
-    public static boolean isContinue() {
+    //Add thêm option để thay đổi question
+    public static boolean isContinue(String askStr) {
         String continueChoice;
         while (true) {
-            continueChoice = Inputter.getString("Do you wish to continue(y/n)? ", "That field is required").trim();
+            continueChoice = Inputter.getString(askStr, "That field is required").trim();
             if (continueChoice.equalsIgnoreCase("y")
                     || continueChoice.equalsIgnoreCase("yes")) {
                 return true;
@@ -51,5 +52,9 @@ public class Menu {
                 System.out.println("Please enter y/n or yes/no.");
             }
         }
+    }
+    
+    public static boolean isContinue(){
+        return isContinue("Do you wish to continue(y/n)? ");
     }
 }
