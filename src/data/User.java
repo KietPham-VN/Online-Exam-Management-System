@@ -2,29 +2,30 @@ package data;
 
 public class User {
 
-  private String userId;
+  private int userID;
   private String username;
   private String password;
   private String email;
   private String role;
-  private String createAt;
+  private java.sql.Timestamp createdAt;
 
-  public User(String userId, String username, String password, String email,
-      String role, String createAt) {
-    this.userId = userId;
+  // Constructor
+  public User(int userID, String username, String password, String email, String role, java.sql.Timestamp createdAt) {
+    this.userID = userID;
     this.username = username;
     this.password = password;
     this.email = email;
     this.role = role;
-    this.createAt = createAt;
+    this.createdAt = createdAt;
   }
 
-  public String getUserId() {
-    return userId;
+  // Getters and Setters
+  public int getUserID() {
+    return userID;
   }
 
-  public void setUserId(String userId) {
-    this.userId = userId;
+  public void setUserID(int userID) {
+    this.userID = userID;
   }
 
   public String getUsername() {
@@ -59,12 +60,11 @@ public class User {
     this.role = role;
   }
 
-  public String getCreateAt() {
-    return createAt;
+  public java.sql.Timestamp getCreatedAt() {
+    return createdAt;
   }
 
-  public void setCreateAt(String createAt) {
-    this.createAt = createAt;
+  public void setCreatedAt(java.sql.Timestamp createdAt) {
+    this.createdAt = createdAt;
   }
-
 }
