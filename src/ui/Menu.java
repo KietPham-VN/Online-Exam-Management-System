@@ -1,6 +1,8 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import utils.Inputter;
 
 public class Menu {
@@ -52,4 +54,5 @@ public class Menu {
             }
         }
     }
+
 }
