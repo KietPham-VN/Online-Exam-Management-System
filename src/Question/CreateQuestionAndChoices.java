@@ -6,7 +6,7 @@ import utils.Inputter;
  *
  * @author Hoang Tran
  */
-public class Question {
+public class CreateQuestionAndChoices {
     //Thêm câu hỏi
     public void addQuestion() {
         int questionID = Inputter.getAnInteger("Enter question ID: ", "Invalid number");
