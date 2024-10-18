@@ -1,4 +1,4 @@
-package Question;
+package controller;
 
 import ui.Menu;
 import utils.Inputter;
