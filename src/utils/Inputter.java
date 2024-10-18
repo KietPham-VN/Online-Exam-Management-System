@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.Date;
 import java.util.Scanner;
 
 public class Inputter {
@@ -193,10 +194,39 @@ public class Inputter {
             }
         }
     }
-    public static void clearScreen() {
-        for (int i = 0; i < 50; i++) {
-            System.out.println();
+    
+    //Get date from string
+    public static Date getDate(String dateFormat,String inpMsg, String errMsg, Date min, Date max){
+        while(true){
+            System.out.println(inpMsg);
+            Date resDate = StringProcessor.parseDate(errMsg, dateFormat);
+            
+            if(resDate!=null){
+                System.out.println(errMsg);
+            }
+            else{
+                if(min==null&&max==null) return resDate;
+                else if(min==null&&resDate.after(max)) System.out.println("The date must be before or equal to: "+max.toString());
+                else if(max==null&&resDate.before(min)) System.out.println("The date must be after or equal to: "+min.toString());
+                else if(resDate.before(min)&&resDate.after(max)) System.out.println("The date must be between: "+min.toString()+" and "+max.toString());
+                else return resDate;
+            }
         }
+    }
+    
+    public static Date getDate(String dateFormat,String inpMsg){
+        return getDate(dateFormat,inpMsg,"The date must follow this format: "+dateFormat,null,null);
+    }
+    
+    public static Date getDate(String dateFormat,String inpMsg,Date min, Date max){
+        return getDate(dateFormat,inpMsg,"The date must follow this format: "+dateFormat,min,max);
+    }
+    
+    
+    public static void clearScreen() {
+        //\033[H: It moves the cursor at the top left corner of the screen or console.
+        //\033[2J: It clears the screen from the cursor to the end of the screen.
+        System.out.print("\033[H\033[2J");  
     }
 }
 
