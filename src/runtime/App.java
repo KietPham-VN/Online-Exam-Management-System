@@ -13,10 +13,10 @@ public class App {
 
   @SuppressWarnings("deprecation")
   public static void main(String[] args) throws SQLException {
-    String server = "KEITH\\SQLEXPRESS";
-    String user = "sa";
-    String password = "root";
-    String db = "Online_Exam_Management_System";
+    String server = "urjellyfish.mssql.somee.com";
+    String user = "urjellyfish_SQLLogin_1";
+    String password = "5medi3d4w6";
+    String db = "urjellyfish";
     int port = 1433;
     SQLServerDataSource ds = new SQLServerDataSource();
     ds.setUser(user);

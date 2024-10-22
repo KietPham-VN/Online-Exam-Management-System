@@ -2,18 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/runtime/App.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/utils/Inputter.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/Grade.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/Subject.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/utils/StringProcessor.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/Choice.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/Teach.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/ui/Menu.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/StudentExam.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/StudentAnswer.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/data/Exam.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
