@@ -35,24 +35,7 @@ public class database {
         ds.setTrustServerCertificate(true);
     }
     
-    public void connect() throws SQLException{
-        Connection conn = ds.getConnection();
-        Statement stmt = null;
-        try {
-          stmt = conn.createStatement();
-        } catch (SQLException ex) {
-          Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        // Truy vấn SELECT
-        String sql = "SELECT UserID, Username, Email, Role, CreatedAt FROM tbl_Users";
-        ResultSet rs = stmt.executeQuery(sql);
-
-        // Duyệt qua kết quả và in ra
-        while (rs.next()) {
-          System.out.println("UserID: " + rs.getInt("UserID") + ", Username: " + rs.getString("Username") + 
-                             ", Email: " + rs.getString("Email") + ", Role: " + rs.getString("Role") +
-                             ", CreatedAt: " + rs.getTimestamp("CreatedAt"));
-        }
+    public Connection connect() throws SQLException{
+       return ds.getConnection();
     }
 }
