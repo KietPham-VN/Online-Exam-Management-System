@@ -1,13 +1,9 @@
 package controller;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import runtime.App;
 import ui.Menu;
 import utils.Inputter;
 
@@ -16,26 +12,86 @@ import utils.Inputter;
  * @author Hoang Tran
  */
 public class CreateQuestionAndChoices {
-    
+
     //Thêm câu hỏi
-    public void addQuestion() {
-        int questionID = Inputter.getAnInteger("Enter question ID: ", "Invalid number");
-        String questionText = Inputter.getString("Enter question text: ", "Question cannot be empty");
-        String questionType = Inputter.getString("Enter the question type: ");
-        double marks = Inputter.getADouble("Enter question marks: ", "Invalid number");
-        int examID = Inputter.getAnInteger("Enter exam ID: ", "Invalid number");
-        int subjectID = Inputter.getAnInteger("Enter subject ID: ", "Invalid number");
+    public void addQuestion(Connection conn) throws SQLException {
+        String insertQuesion = "INSERT INTO tbl_Questions (QuestionText, QuestionType, Marks, ExamID, SubjectID) VALUES (?, ?, ?, ?, ?)";
+        String checkExamID = "SELECT COUNT(*) FROM tbl_Exams WHERE ExamID = ?";
+        String checkSubjectID = "SELECT COUNT(*) FROM tbl_Subjects WHERE SubjectID = ?";
+        try (PreparedStatement questionStmt = conn.prepareStatement(insertQuesion, PreparedStatement.RETURN_GENERATED_KEYS);
+                PreparedStatement checkExamStmt = conn.prepareStatement(checkExamID);
+                PreparedStatement checkSubjectStmt = conn.prepareStatement(checkSubjectID)) {
+            int examID, subjectID;
+            // Add question text
+            String questionText = Inputter.getString("Enter question text: ", "Question cannot be empty");
+            questionStmt.setString(1, questionText);
+            //Add question type
+            String questionType = Inputter.getString("Enter question type (MCQ/ShortAnswer): ", "Question type cannot be empty");
+            questionStmt.setString(2, questionType);
+            //Add marks for each ques
+            double marks = Inputter.getADouble("Enter question marks: ", "Invalid number");
+            questionStmt.setDouble(3, marks);
 
-        if (!Menu.isContinue()) {
-            return;
+            while (true) {
+                examID = Inputter.getAnInteger("Enter exam ID: ", "Invalid number");
+                checkExamStmt.setInt(1, examID);
+                try (ResultSet rs = checkExamStmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        break;
+                    } else {
+                        System.out.println("Invalid exam ID. Please enter valid exam ID");
+                    }
+                }
+            }
+            while (true) {
+                subjectID = Inputter.getAnInteger("Enter subject ID: ", "Invalid number");
+                checkSubjectStmt.setInt(2, subjectID);
+                try (ResultSet rs = checkSubjectStmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(2) > 0) {
+                        break;
+                    } else {
+                        System.out.println("Invalid subject ID. Please enter valid subject ID");
+                    }
+                }
+            }
+            questionStmt.executeUpdate();
+            System.out.println("Question added successfully.");
+            try (ResultSet generatedKeys = questionStmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int questionID = generatedKeys.getInt(1);
+                    System.out.println("Generated Question ID: " + questionID);
+                    // Gọi hàm thêm các lựa chọn
+                    addChoices(conn, questionID);
+                }
+            }
         }
-
     }
 
-    public void addChoices() {
-        int choiceID = Inputter.getAnInteger("Enter choiceID: ", "Invalid number");
-        int questionID = Inputter.getAnInteger("Enter question ID: ", "Invalid number");
-        String choiceText = Inputter.getString("Enter choice text: ", "Choice cannot be empty");
-        boolean isCorrect = false;
+    public void addChoices(Connection conn, int questionID) throws SQLException {
+        String insertChoice = "INSERT INTO tbl_Choices (QuestionID, ChoiceText, IsCorrect) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement choiceStmt = conn.prepareStatement(insertChoice)) {
+            while (true) {
+                // Nhập lựa chọn
+                String choiceText = Inputter.getString("Enter choice text: ", "Choice cannot be empty");
+                choiceStmt.setString(2, choiceText);
+
+                // Đặt QuestionID cho mỗi lựa chọn
+                choiceStmt.setInt(1, questionID);
+
+                // Xác định xem lựa chọn này có đúng không
+                boolean isCorrect = Menu.isContinue("Is this the correct answer (yes/no)? ");
+                choiceStmt.setBoolean(3, isCorrect);
+
+                // Chèn lựa chọn vào cơ sở dữ liệu
+                choiceStmt.executeUpdate();
+                System.out.println("Choice added successfully.");
+
+                // Hỏi người dùng có muốn tiếp tục thêm lựa chọn không
+                if (!Menu.isContinue("Do you want to add more choices for this question (y/n)?")) {
+                    break;
+                }
+            }
+        }
     }
 }
