@@ -26,8 +26,16 @@ public class CreateQuestionAndChoices {
             String questionText = Inputter.getString("Enter question text: ", "Question cannot be empty");
             questionStmt.setString(1, questionText);
             //Add question type
-            String questionType = Inputter.getString("Enter question type (MCQ/ShortAnswer): ", "Question type cannot be empty");
-            questionStmt.setString(2, questionType);
+            String questionType;
+            do {
+                questionType = Inputter.getString("Enter question type (MCQ/ShortAnswer): ", "Question type cannot be empty");
+                if (questionType.equalsIgnoreCase("MCQ") || questionType.equalsIgnoreCase("ShortAnswer")) {
+                    break;
+                } else {
+                    System.out.println("Invalid question type. Please enter either 'MCQ' or 'ShortAnswer'.");
+                }
+            } while (true);
+            questionStmt.setString(2, questionType.toUpperCase());
             //Add marks for each ques
             double marks = Inputter.getADouble("Enter question marks: ", "Invalid number");
             questionStmt.setDouble(3, marks);
@@ -43,17 +51,19 @@ public class CreateQuestionAndChoices {
                     }
                 }
             }
+            questionStmt.setInt(4, examID);  // Set Exam ID here
             while (true) {
                 subjectID = Inputter.getAnInteger("Enter subject ID: ", "Invalid number");
-                checkSubjectStmt.setInt(2, subjectID);
+                checkSubjectStmt.setInt(1, subjectID);
                 try (ResultSet rs = checkSubjectStmt.executeQuery()) {
-                    if (rs.next() && rs.getInt(2) > 0) {
+                    if (rs.next() && rs.getInt(1) > 0) {
                         break;
                     } else {
                         System.out.println("Invalid subject ID. Please enter valid subject ID");
                     }
                 }
             }
+            questionStmt.setInt(5, subjectID);  // Set Subject ID here
             questionStmt.executeUpdate();
             System.out.println("Question added successfully.");
             try (ResultSet generatedKeys = questionStmt.getGeneratedKeys()) {
@@ -69,7 +79,7 @@ public class CreateQuestionAndChoices {
 
     public void addChoices(Connection conn, int questionID) throws SQLException {
         String insertChoice = "INSERT INTO tbl_Choices (QuestionID, ChoiceText, IsCorrect) VALUES (?, ?, ?)";
-        
+
         try (PreparedStatement choiceStmt = conn.prepareStatement(insertChoice)) {
             while (true) {
                 // Nhập lựa chọn

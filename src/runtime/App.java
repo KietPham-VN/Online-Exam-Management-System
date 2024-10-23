@@ -4,6 +4,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import controller.CreateExamController;
 import controller.CreateQuestionAndChoices;
+import controller.DeleteQuestion;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,6 +35,7 @@ public class App {
             // Instantiate controllers
             CreateExamController examController = new CreateExamController();
             CreateQuestionAndChoices questionController = new CreateQuestionAndChoices();
+            DeleteQuestion deleteQuestion = new DeleteQuestion();
             
             // Menu loop for selecting actions
             Scanner scanner = new Scanner(System.in);
@@ -42,8 +44,9 @@ public class App {
                 System.out.println("What would you like to do?");
                 System.out.println("1. Add Exam");
                 System.out.println("2. Add Question and Choices");
-                System.out.println("3. Exit");
-                System.out.print("Select an option (1-3): ");
+                System.out.println("3. Delete Question");
+                System.out.println("4. Exit");
+                System.out.print("Select an option (1-4): ");
                 String option = scanner.nextLine();
                 
                 switch (option) {
@@ -56,8 +59,11 @@ public class App {
                         // Call the method to add a question and its choices
                         questionController.addQuestion(conn);
                         break;
-                        
                     case "3":
+                        //Call the method to del question
+                        deleteQuestion.deleteQuestion(conn);
+                        break;
+                    case "4":
                         // Exit the program
                         keepRunning = false;
                         break;
