@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,26 +94,30 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User FindUsers(String userName) {
+    public ArrayList<User> FindUsers(String userName) {
+        ArrayList<User> users = new ArrayList<>();
         String selectSql = "SELECT * FROM tbl_Users WHERE Username = ?";
+
         try (PreparedStatement stmt = conn.prepareStatement(selectSql)) {
             stmt.setString(1, userName);
 
             ResultSet resultSet = stmt.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 int userId = resultSet.getInt("ID");
                 String password = resultSet.getString("Password");
                 String email = resultSet.getString("Email");
                 String role = resultSet.getString("Role");
                 Timestamp createdAt = resultSet.getTimestamp("CreatedAt");
 
-                return new User(userId, userName, password, email, role, createdAt);
+                User user = new User(userId, userName, password, email, role, createdAt);
+                users.add(user);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+
+        return users; // Return empty list if no users found
     }
     
 }

@@ -6,6 +6,7 @@
 package interfaces.repository;
 
 import data.User;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,5 +14,7 @@ import data.User;
  */
 public interface IUserRepository {
     public User CreateUser(String userName,String password, String email, String role);
+    public User Login(String userName,String password);
     public User FindUserById(int UserID);
+    public ArrayList<User> FindUsers(String userName);
 }

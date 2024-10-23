@@ -1,7 +1,9 @@
 package runtime;
 
 import db.database;
-import java.sql.SQLException;
+import interfaces.repository.IUserRepository;
+import java.sql.Connection;
+import repository.UserRepository;
 
 public class App {
 
@@ -15,7 +17,10 @@ public class App {
     database ds = new database(server,user,password,db,port);
     
     try{
-        ds.connect();
+        Connection conn = ds.connect();
+        //Testing the user
+        IUserRepository userRepo = new UserRepository(conn);
+        System.out.println(userRepo.CreateUser("N", "123", "s@gmail.com", "Student").toString());
     }
     catch(Exception ex){
         System.out.println(ex);
