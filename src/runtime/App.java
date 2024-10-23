@@ -1,8 +1,12 @@
 package runtime;
 
+import static com.microsoft.sqlserver.jdbc.SQLServerDriver.register;
+import controller.UserController;
+import data.User;
 import db.database;
 import interfaces.repository.IUserRepository;
 import java.sql.Connection;
+import java.util.ArrayList;
 import repository.UserRepository;
 
 public class App {
@@ -18,9 +22,22 @@ public class App {
     
     try{
         Connection conn = ds.connect();
-        //Testing the user
         IUserRepository userRepo = new UserRepository(conn);
-        System.out.println(userRepo.CreateUser("N", "123", "s@gmail.com", "Student").toString());
+        UserController userController = new UserController(userRepo);
+        
+        User loginUser;
+        //Check if there a user in the system
+        ArrayList<User> users = userRepo.FindUsers("");
+        if(users.isEmpty()){
+            System.out.println("Cannot find a single user. Please register a new user as an admin.");
+            loginUser = userController.printRegisterWithNoUsers();
+        }
+        else{
+            System.out.println("Login in");
+            loginUser = userController.printLogin();
+        }
+        //Pass loginuser to more controller
+        
     }
     catch(Exception ex){
         System.out.println(ex);

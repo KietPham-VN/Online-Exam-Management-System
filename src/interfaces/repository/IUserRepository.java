@@ -17,4 +17,5 @@ public interface IUserRepository {
     public User Login(String userName,String password);
     public User FindUserById(int UserID);
     public ArrayList<User> FindUsers(String userName);
+    public User FindSingleUser(String userName);
 }

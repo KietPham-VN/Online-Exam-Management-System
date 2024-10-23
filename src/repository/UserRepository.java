@@ -48,14 +48,14 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public User Login(String userName, String password) {
-        String selectSql = "SELECT * FROM tbl_Users WHERE Username=? AND Password=?  LIMIT 1";
+        String selectSql = "SELECT TOP 1 * FROM tbl_Users WHERE Username=? AND Password=?";
         try(PreparedStatement stmt = conn.prepareStatement(selectSql,PreparedStatement.RETURN_GENERATED_KEYS)){
             stmt.setString(1, userName);
             stmt.setString(2, password);
             ResultSet res=stmt.executeQuery();
             
             if (res.next()) {
-                int userId = res.getInt("ID");
+                int userId = res.getInt("UserID");
                 String retrievedUserName = res.getString("Username");
                 String retrievedPassword = res.getString("Password");
                 String email = res.getString("Email");
@@ -96,15 +96,15 @@ public class UserRepository implements IUserRepository {
     @Override
     public ArrayList<User> FindUsers(String userName) {
         ArrayList<User> users = new ArrayList<>();
-        String selectSql = "SELECT * FROM tbl_Users WHERE Username = ?";
+        String selectSql = (userName.isEmpty())?"SELECT * FROM tbl_Users"
+                : "SELECT * FROM tbl_Users WHERE Username LIKE "+"'%"+userName+"'";
 
         try (PreparedStatement stmt = conn.prepareStatement(selectSql)) {
-            stmt.setString(1, userName);
 
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                int userId = resultSet.getInt("ID");
+                int userId = resultSet.getInt("UserID");
                 String password = resultSet.getString("Password");
                 String email = resultSet.getString("Email");
                 String role = resultSet.getString("Role");
@@ -118,6 +118,32 @@ public class UserRepository implements IUserRepository {
         }
 
         return users; // Return empty list if no users found
+    }
+
+    @Override
+    public User FindSingleUser(String userName) {
+        User user = null;
+        String selectSql = "SELECT * FROM tbl_Users WHERE Username WHERE ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(selectSql)) {
+            stmt.setString(1, userName);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int userId = resultSet.getInt("UserID");
+                String password = resultSet.getString("Password");
+                String email = resultSet.getString("Email");
+                String role = resultSet.getString("Role");
+                Timestamp createdAt = resultSet.getTimestamp("CreatedAt");
+
+                user = new User(userId, userName, password, email, role, createdAt);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return user; // Return empty list if no users found
     }
     
 }
