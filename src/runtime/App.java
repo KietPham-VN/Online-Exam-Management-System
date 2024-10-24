@@ -3,8 +3,7 @@ package runtime;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import controller.CreateExamController;
-import controller.CreateQuestionAndChoices;
-import controller.DeleteQuestion;
+import controller.DeleteController;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,8 +33,7 @@ public class App {
     try (Connection conn = ds.getConnection()) {
             // Instantiate controllers
             CreateExamController examController = new CreateExamController();
-            CreateQuestionAndChoices questionController = new CreateQuestionAndChoices();
-            DeleteQuestion deleteQuestion = new DeleteQuestion();
+            DeleteController deleteQuestion = new DeleteController();
             
             // Menu loop for selecting actions
             Scanner scanner = new Scanner(System.in);
@@ -57,7 +55,7 @@ public class App {
                         
                     case "2":
                         // Call the method to add a question and its choices
-                        questionController.addQuestion(conn);
+                        examController.addQuestion(conn);
                         break;
                     case "3":
                         //Call the method to del question

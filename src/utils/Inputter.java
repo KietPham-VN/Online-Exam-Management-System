@@ -82,7 +82,7 @@ public class Inputter {
                 System.out.print(inpMsg);
                 int number = Integer.parseInt(sc.nextLine());//
                 if (number < lowerBound || number > upperBound) {
-                    System.out.print("The number must be in range of " + lowerBound + " and " + upperBound);
+                    System.out.println("The number must be in range of " + lowerBound + " and " + upperBound);
                 } else {
                     return number;
                 }

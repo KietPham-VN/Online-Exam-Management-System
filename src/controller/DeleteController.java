@@ -14,21 +14,27 @@ import utils.Inputter;
  *
  * @author Hoang Tran
  */
-public class DeleteQuestion {
-
+public class DeleteController {
+    
+    public void deleteExam(Connection conn) throws SQLException {
+        
+    }
+    
+    
+    
     public void deleteQuestion(Connection conn) throws SQLException {
         //delete the choices in that question
         String deleteChoices = "DELETE FROM tbl_Choices WHERE QuestionID = ?";
         //delete the question
         String deleteQuestion = "DELETE FROM tbl_Questions WHERE QuestionID = ?";
         
-        // Get QuestionID to delete
+        // questionID to delete
         int questionID = Inputter.getAnInteger("Enter the QuestionID to delete: ", "Invalid number");
         
         try {
-            // Start transaction
+            // cai nay la set cho câu lệnh delete không lưu thẳng vào dữ liệu
             conn.setAutoCommit(false);
-            // Delete related choices first
+            // delete related choices first
             try (PreparedStatement deleteChoicesStmt = conn.prepareStatement(deleteChoices)) {
                 deleteChoicesStmt.setInt(1, questionID);
                 int deletedChoices = deleteChoicesStmt.executeUpdate();
@@ -46,12 +52,11 @@ public class DeleteQuestion {
                     System.out.println("Question with ID " + questionID + " not found.");
                 }
             }
-
-            // Commit transaction
+            // giờ mới lưu vào bằng tay
             conn.commit();
 
         } catch (SQLException e) {
-            // Rollback in case of error
+            // cái này để quay lại lỡ mà lưu lỗi
             conn.rollback();
             System.err.println("SQL Server error: " + e.getMessage());
             throw e;
@@ -59,6 +64,12 @@ public class DeleteQuestion {
             // Reset auto-commit to default
             conn.setAutoCommit(true);
         }
+    }
+    
+    public void deleteChoice(Connection conn) throws SQLException {
+        
+        
+        
         
     }
 }

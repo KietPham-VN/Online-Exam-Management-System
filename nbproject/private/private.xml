@@ -5,10 +5,11 @@
         <group>
             <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/runtime/App.java</file>
             <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/utils/Inputter.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/controller/CreateQuestionAndChoices.java</file>
             <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/ui/Menu.java</file>
             <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/controller/CreateExamController.java</file>
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/controller/DeleteQuestion.java</file>
+            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/controller/DeleteController.java</file>
+            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/ui/ExamMenu.java</file>
+            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/controller/RegisterController.java</file>
         </group>
     </open-files>
 </project-private>
