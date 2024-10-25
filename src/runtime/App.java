@@ -1,6 +1,5 @@
 package runtime;
 
-import static com.microsoft.sqlserver.jdbc.SQLServerDriver.register;
 import controller.UserController;
 import data.User;
 import db.database;
@@ -8,6 +7,9 @@ import interfaces.repository.IUserRepository;
 import java.sql.Connection;
 import java.util.ArrayList;
 import repository.UserRepository;
+import ui.AdminMenu;
+import ui.InstructorMenu;
+import ui.StudentMenu;
 
 public class App {
 
@@ -36,8 +38,22 @@ public class App {
             System.out.println("Login in");
             loginUser = userController.printLogin();
         }
-        //Pass loginuser to more controller
         
+        //Pass loginuser to more controller
+        switch(loginUser.getRole()){
+            case "Admin":{
+                AdminMenu adminMenu = new AdminMenu(loginUser,userController);
+                adminMenu.Print();
+            }
+            case "Instructor":{
+                InstructorMenu instructorMenu = new InstructorMenu(loginUser,userController);
+                instructorMenu.Print();
+            }
+            case "Student":{
+                StudentMenu studentMenu = new StudentMenu(loginUser,userController);
+                studentMenu.Print();
+            }
+        }
     }
     catch(Exception ex){
         System.out.println(ex);

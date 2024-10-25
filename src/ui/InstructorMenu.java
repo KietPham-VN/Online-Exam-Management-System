@@ -12,30 +12,32 @@ import data.User;
  *
  * @author NGHIA
  */
-public class AdminMenu {
+public class InstructorMenu {
     private User user;
     private UserController userController;
-    public AdminMenu(User user,UserController userController){
+    public InstructorMenu(User user,UserController userController){
         this.user=user;
         this.userController = userController;
     }
     
     public void Print(){
         while(true){
-            Menu adminMenu = new Menu("Welcome back, "+user.getUsername()+" | Mode: Admin");
-            adminMenu.addNewOption("Create new user");
+            Menu adminMenu = new Menu("Welcome back, "+user.getUsername()+" | Mode: Instructor");
+            adminMenu.addNewOption("Manage subjects and exams");
+            adminMenu.addNewOption("Assign exams");
             adminMenu.addNewOption("Reset password");
             adminMenu.addNewOption("Logout");
             
             int choice=adminMenu.getChoice();
             switch(choice){
                 case 1:{
-                    userController.printRegister();
                 }
                 case 2:{
-                    userController.printResetPassword(user.getUserID());
                 }
                 case 3:{
+                    userController.printResetPassword(user.getUserID());
+                }
+                case 4:{
                     return;
                 }
             }
