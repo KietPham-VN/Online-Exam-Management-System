@@ -18,4 +18,5 @@ public interface IUserRepository {
     public User FindUserById(int UserID);
     public ArrayList<User> FindUsers(String userName);
     public User FindSingleUser(String userName);
+    public int ResetPasword(int userID,String newPassword);
 }

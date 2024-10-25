@@ -145,5 +145,22 @@ public class UserRepository implements IUserRepository {
 
         return user; // Return empty list if no users found
     }
+
+    @Override
+    public int ResetPasword(int userID,String newPassword) {
+        String updatePasswordSQL = "UPDATE tbl_Users SET Password = ? WHERE UserID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(updatePasswordSQL)) {
+            stmt.setString(1, newPassword);
+            stmt.setInt(2, userID);
+
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected > 0) {
+                return rowsAffected; 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;    
+    }
     
 }

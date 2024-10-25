@@ -84,4 +84,19 @@ public class UserController {
 
        return newUser;
     }
+    
+    public void printResetPassword(int userID){
+        while(true){
+            String resetPassword = Inputter.getString("Enter the new password: ","Passowrd must not be empty and have more than 8 characters","^.{8}$");
+
+            if(userRepository.ResetPasword(userID, resetPassword)==1){
+                System.out.println("Reset password successfully");
+                return;
+            }
+            else{
+                System.out.println("Password reset failed");
+            }
+        }
+        
+    }
 }
