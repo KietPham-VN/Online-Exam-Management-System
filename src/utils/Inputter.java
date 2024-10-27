@@ -165,8 +165,8 @@ public class Inputter {
 
     //5. Hàm nhập chuỗi cấm để trống
     public static String getString(String inpMsg, String errMsg) {
-        System.out.print(inpMsg);
         while (true) {
+            System.out.print(inpMsg);
             try {
                 String str = sc.nextLine();
                 if (str.isEmpty()) {
@@ -174,15 +174,15 @@ public class Inputter {
                 }
                 return str;
             } catch (Exception e) {
-                System.out.print(errMsg);
+                System.out.println(errMsg);
             }
         }
     }
 
     //6. Hàm nhập chuỗi cấm để trống và phải giống format(regex)  
     public static String getString(String inpMsg, String errMsg, String regex) {
-        System.out.print(inpMsg);
         while (true) {
+            System.out.print(inpMsg);
             try {
                 String str = sc.nextLine();
                 if (str.isEmpty() || !str.matches(regex)) {

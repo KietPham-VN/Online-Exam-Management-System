@@ -33,7 +33,7 @@ public class App {
     try (Connection conn = ds.getConnection()) {
             // Instantiate controllers
             CreateExamController examController = new CreateExamController();
-            DeleteController deleteQuestion = new DeleteController();
+            DeleteController deleteController = new DeleteController();
             
             // Menu loop for selecting actions
             Scanner scanner = new Scanner(System.in);
@@ -44,7 +44,9 @@ public class App {
                 System.out.println("2. Add Question and Choices");
                 System.out.println("3. Delete Question");
                 System.out.println("4. Exit");
-                System.out.print("Select an option (1-4): ");
+                System.out.println("4. Delete Exam");
+                System.out.println("6. Delete Choices");
+                System.out.print("Select an option (1-6): ");
                 String option = scanner.nextLine();
                 
                 switch (option) {
@@ -59,13 +61,18 @@ public class App {
                         break;
                     case "3":
                         //Call the method to del question
-                        deleteQuestion.deleteQuestion(conn);
+                        deleteController.deleteQuestion(conn);
                         break;
                     case "4":
                         // Exit the program
                         keepRunning = false;
                         break;
-                        
+                    case "5":
+                        deleteController.deleteExam(conn);
+                        break;
+                    case "6":
+                        deleteController.deleteChoice(conn);
+                        break;
                     default:
                         System.out.println("Invalid option. Please choose 1, 2, or 3.");
                         break;

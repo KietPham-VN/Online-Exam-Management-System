@@ -6,109 +6,112 @@
 package controller;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import controller.ValidationMarks;
-import data.ExamData;
+import data.Exam;
+import data.Question;
+import repository.ExamRepository;
 import ui.ExamMenu;
+import ui.Menu;
+import utils.Inputter;
 
 public class CreateExamController {
-    private final InputHandler inputHandler;
-    
+
+    private final ExamRepository examRepository;
+    private final ValidationMarks validMarks;
+
     //Pass in the exam model here
     public CreateExamController() {
-        this.inputHandler = new InputHandler();
+        this.examRepository = new ExamRepository();
+        this.validMarks = new ValidationMarks();
     }
 
     public void addExam(Connection conn) throws SQLException {
-        String insertExam = "INSERT INTO tbl_Exams (ExamName, SubjectID, InstructorID, ExamDate, Duration, TotalMarks) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement examStmt = conn.prepareStatement(insertExam, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ExamMenu examMenu = new ExamMenu();
-            
-            while (true) {
-                // Get exam data from menu
-                ExamData examData = examMenu.examNameMenu(conn);
-                examStmt.setString(1, examData.getExamName());
-                examStmt.setInt(2, examData.getSubjectID());
-                
-                // Get instructor ID
-                int instructorID = inputHandler.getInstructorID(conn);
-                examStmt.setInt(3, instructorID);
-                
-                // Get and set exam date
-                examStmt.setDate(4, inputHandler.getExamDate());
-                
-                // Get and set duration
-                examStmt.setInt(5, inputHandler.getExamDuration());
-                
-                // Get and set total marks
-                examStmt.setInt(6, inputHandler.getExamMark());
-                
-                // Execute update
-                examStmt.executeUpdate();
-                System.out.println("Exam added successfully");
-                
-                if (!inputHandler.continueAddingExams()) {
-                    return;
-                }
-            }
-        }
+        ExamMenu examMenu = new ExamMenu();
+        boolean choice = true;
+        do {
+            Exam newExam = examMenu.examNameMenu(conn);
+            examRepository.insertExam(conn, newExam);
+            System.out.println("Exam added successfully.");
+            choice = Menu.isContinue("Do you want to add another exam?[Y/N]: ");
+        } while (choice == true);
     }
 
     //Thêm câu hỏi
     public void addQuestion(Connection conn) throws SQLException {
-        String insertQuestion = "INSERT INTO tbl_Questions (QuestionText, QuestionType, Marks, ExamID, SubjectID) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement questionStmt = conn.prepareStatement(insertQuestion, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ValidationMarks validation = new ValidationMarks();
-            
-            // Get question data
-            String questionText = inputHandler.getQuestionText();
-            String questionType = inputHandler.getQuestionType();
-            int examID = inputHandler.getExamID(conn);
-            int subjectID = inputHandler.getSubjectID(conn);
-            int marks = inputHandler.getQuestionMarks(conn, examID, validation);
-            
-            // Set parameters
-            questionStmt.setString(1, questionText);
-            questionStmt.setString(2, questionType);
-            questionStmt.setDouble(3, marks);
-            questionStmt.setInt(4, examID);
-            questionStmt.setInt(5, subjectID);
-            
-            // Execute update
-            questionStmt.executeUpdate();
-            System.out.println("Question added successfully.");
-            
-            // Get generated ID and add choices
-            try (ResultSet generatedKeys = questionStmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int questionID = generatedKeys.getInt(1);
-                    System.out.println("Generated Question ID: " + questionID);
-                    addChoices(conn, questionID);
-                }
+        while (true) {
+        String questionText = Inputter.getString("Enter the question text: ", "Question cannot be empty");
+        String questionType = Inputter.getString("Enter question type [MCQ|ShortAnswer]: ", "Please enter MCQ or ShortAnswer", "^(MCQ|ShortAnswer)$");
+
+        int examID;
+        int subjectID;
+        int marks;
+        boolean isExamValid;
+        boolean isSubjectValid;
+        boolean isValidMark;
+
+        // Validate Exam ID
+        do {
+            examID = Inputter.getAnInteger("Enter examID: ", "ExamID cannot be empty");
+            isExamValid = examRepository.checkExamExists(conn, examID);
+            if (!isExamValid) {
+                System.out.println("Exam not found");
             }
+        } while (!isExamValid);
+
+        // Validate Subject ID
+        do {
+            subjectID = Inputter.getAnInteger("Enter subject ID: ", "SubjectID cannot be empty");
+            isSubjectValid = examRepository.checkSubjectExists(conn, subjectID);
+            if (!isSubjectValid) {
+                System.out.println("Subject not found");
+            }
+        } while (!isSubjectValid);
+
+        // Validate Marks with available exam mark constraint
+        do {
+            marks = Inputter.getAnInteger("Enter question marks: ", "Invalid marks", 1, 10);
+            isValidMark = validMarks.validateQuestionMark(conn, examID, marks);
+            if (!isValidMark) {
+                System.out.println("The entered marks exceed the remaining available marks. Please enter a valid mark.");
+            }
+        } while (!isValidMark);
+
+        // Create and insert the Question
+        Question questionData = new Question(0, questionText, questionType, marks, examID, subjectID);
+        examRepository.insertQuestion(conn, examID, questionData);
+        System.out.println("Question added successfully.");
+
+        // Add choices for the question if needed
+        addChoices(conn, questionData.getQuestionID());
+
+        // Option to continue adding questions
+        boolean continueAdding = Menu.isContinue("Do you want to add another question?[Y/N]: ");
+        if (!continueAdding) {
+            break;
         }
     }
+}
 
     public void addChoices(Connection conn, int questionID) throws SQLException {
-        String insertChoice = "INSERT INTO tbl_Choices (QuestionID, ChoiceText, IsCorrect) VALUES (?, ?, ?)";
+        boolean isQuestionValid = examRepository.checkQuestionExists(conn, questionID);
+        if (!isQuestionValid) {
+            System.out.println("Question ID not found.");
+            return;
+        }
+        // Allow adding multiple choices for a question
+        while (true) {
+            String choiceText = Inputter.getString("Enter choice text: ", "Choice cannot be empty");
+            boolean isCorrect = Menu.isContinue("Is this choice correct? [Y/N]: ");
 
-        try (PreparedStatement choiceStmt = conn.prepareStatement(insertChoice)) {
-            while (true) {
-                String choiceText = inputHandler.getChoiceText();
-                boolean isCorrect = inputHandler.isCorrectAnswer();
-                
-                choiceStmt.setInt(1, questionID);
-                choiceStmt.setString(2, choiceText);
-                choiceStmt.setBoolean(3, isCorrect);
-                
-                choiceStmt.executeUpdate();
-                System.out.println("Choice added successfully.");
-                
-                if (!inputHandler.continueAddingChoices()) {
-                    break;
-                }
+            // Insert the choice into the database
+            examRepository.insertChoice(conn, questionID, choiceText, isCorrect);
+            System.out.println("Choice added successfully.");
+
+            // Check if the user wants to continue adding choices
+            boolean continueAdding = Menu.isContinue("Do you want to add another choice?[Y/N]: ");
+            if (!continueAdding) {
+                break;
             }
         }
     }

@@ -6,8 +6,9 @@
 package controller;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import repository.ExamRepository;
+import utils.Inputter;
 
 /**
  *
@@ -15,132 +16,54 @@ import java.sql.SQLException;
  */
 public class DeleteController {
 
-    private final InputHandler inputHandler;
+    private final ExamRepository examRepository;
 
     public DeleteController() {
-        this.inputHandler = new InputHandler();
+        this.examRepository = new ExamRepository();
     }
 
     public void deleteExam(Connection conn) throws SQLException {
-        String deleteChoices = "DELETE FROM tbl_Choices WHERE QuestionID IN (SELECT QuestionID FROM tbl_Questions WHERE ExamID = ?)";
-        String deleteQuestions = "DELETE FROM tbl_Questions WHERE ExamID = ?";
-        String deleteExam = "DELETE FROM tbl_Exams WHERE ExamID = ?";
-
-        int examID = inputHandler.getExamIDToDelete(conn);
-
-        try {
-            conn.setAutoCommit(false);
-
-            // delete related choices
-            try (PreparedStatement deleteChoicesStmt = conn.prepareStatement(deleteChoices)) {
-                deleteChoicesStmt.setInt(1, examID);
-                int deletedChoices = deleteChoicesStmt.executeUpdate();
-                System.out.println("Deleted " + deletedChoices + " related choices");
+        int examID = Inputter.getAnInteger("Enter examID you want to delete: ", "ExamID cannot be empty");
+        if (!examRepository.checkExamExists(conn, examID)) {
+            System.out.println("Exam ID not found");
+        } else {
+            try {
+                examRepository.deleteExam(conn, examID);
+                System.out.println("Exam with ID " + examID + " and all related data deleted successfully.");
+            } catch (SQLException e) {
+                System.err.println("Error deleting exam: " + e.getMessage());
+                throw e;
             }
-
-            // delete related questions
-            try (PreparedStatement deleteQuestionsStmt = conn.prepareStatement(deleteQuestions)) {
-                deleteQuestionsStmt.setInt(1, examID);
-                int deletedQuestions = deleteQuestionsStmt.executeUpdate();
-                System.out.println("Deleted " + deletedQuestions + " related questions");
-            }
-
-            // finally delete the exam
-            try (PreparedStatement deleteExamStmt = conn.prepareStatement(deleteExam)) {
-                deleteExamStmt.setInt(1, examID);
-                int deletedExam = deleteExamStmt.executeUpdate();
-
-                if (deletedExam > 0) {
-                    System.out.println("Exam with ID " + examID + " deleted successfully.");
-                } else {
-                    System.out.println("Exam with ID " + examID + " not found.");
-                }
-            }
-
-            // Commit the transaction
-            conn.commit();
-
-        } catch (SQLException e) {
-            conn.rollback();
-            System.err.println("SQL Server error: " + e.getMessage());
-            throw e;
-        } finally {
-            // Reset auto-commit to default
-            conn.setAutoCommit(true);
         }
     }
 
     public void deleteQuestion(Connection conn) throws SQLException {
-        //delete the choices in that question
-        String deleteChoices = "DELETE FROM tbl_Choices WHERE QuestionID = ?";
-        //delete the question
-        String deleteQuestion = "DELETE FROM tbl_Questions WHERE QuestionID = ?";
-
-        // questionID to delete
-        int questionID = inputHandler.getQuestionIDToDelete();
-
-        try {
-            // cai nay la set cho câu lệnh delete không lưu thẳng vào dữ liệu
-            conn.setAutoCommit(false);
-            // delete related choices first
-            try (PreparedStatement deleteChoicesStmt = conn.prepareStatement(deleteChoices)) {
-                deleteChoicesStmt.setInt(1, questionID);
-                int deletedChoices = deleteChoicesStmt.executeUpdate();
-                System.out.println("Deleted " + deletedChoices + " related choices for question ID " + questionID);
+        int questionID = Inputter.getAnInteger("Enter questionID you want to delete: ", "QuestionID cannot be empty");
+        if (!examRepository.checkQuestionExists(conn, questionID)) {
+            System.out.println("Question ID not found");
+        } else {
+            try {
+                examRepository.deleteQuestion(conn, questionID);
+                System.out.println("Question with ID " + questionID + " and all related choices deleted successfully.");
+            } catch (SQLException e) {
+                System.err.println("Error deleting question: " + e.getMessage());
+                throw e;
             }
-
-            // Now delete the question
-            try (PreparedStatement deleteQuestionStmt = conn.prepareStatement(deleteQuestion)) {
-                deleteQuestionStmt.setInt(1, questionID);
-                int deletedQuestion = deleteQuestionStmt.executeUpdate();
-
-                if (deletedQuestion > 0) {
-                    System.out.println("Question with ID " + questionID + " deleted successfully.");
-                } else {
-                    System.out.println("Question with ID " + questionID + " not found.");
-                }
-            }
-            // giờ mới lưu vào bằng tay
-            conn.commit();
-
-        } catch (SQLException e) {
-            // cái này để quay lại lỡ mà lưu lỗi
-            conn.rollback();
-            System.err.println("SQL Server error: " + e.getMessage());
-            throw e;
-        } finally {
-            // Reset auto-commit to default
-            conn.setAutoCommit(true);
         }
     }
 
     public void deleteChoice(Connection conn) throws SQLException {
-        String deleteChoice = "DELETE FROM tbl_Choices WHERE ChoiceID = ?";
-
-        int choiceID = inputHandler.getChoiceIDToDelete(conn);
-
-        try {
-            conn.setAutoCommit(false);
-
-            try (PreparedStatement deleteChoiceStmt = conn.prepareStatement(deleteChoice)) {
-                deleteChoiceStmt.setInt(1, choiceID);
-                int deletedChoice = deleteChoiceStmt.executeUpdate();
-
-                if (deletedChoice > 0) {
-                    System.out.println("Choice with ID " + choiceID + " deleted successfully.");
-                } else {
-                    System.out.println("Choice with ID " + choiceID + " not found.");
-                }
+        int choiceID = Inputter.getAnInteger("Enter choiceID you want to delete: ", "ChoiceID cannot be empty");
+        if (!examRepository.checkChoiceExists(conn, choiceID)) {
+            System.out.println("Choice ID not found");
+        } else {
+            try {
+                examRepository.deleteChoice(conn, choiceID);
+                System.out.println("Choice with ID " + choiceID + " deleted successfully.");
+            } catch (SQLException e) {
+                System.err.println("Error deleting choice: " + e.getMessage());
+                throw e;
             }
-
-            conn.commit();
-
-        } catch (SQLException e) {
-            conn.rollback();
-            System.err.println("SQL Server error: " + e.getMessage());
-            throw e;
-        } finally {
-            conn.setAutoCommit(true);
         }
     }
 }

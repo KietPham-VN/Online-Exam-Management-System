@@ -5,11 +5,14 @@
  */
 package ui;
 
-import data.ExamData;
+import data.Exam;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import utils.Inputter;
 
 /**
@@ -47,7 +50,7 @@ public class ExamMenu {
         return subjectID;
     }
 
-    public ExamData examNameMenu(Connection conn) throws SQLException {
+    public Exam examNameMenu(Connection conn) throws SQLException {
         System.out.println("1. Midterm Exam");
         System.out.println("2. Final Exam");
         System.out.println("3. Other");
@@ -66,6 +69,27 @@ public class ExamMenu {
         String subjectName = getSubjectName(conn, subjectID);
         String examName = examType + " - " + subjectName;
 
-        return new ExamData(examName, subjectID);
+        // input for other Exam fields
+        int instructorID = Inputter.getAnInteger("Enter Instructor ID: ", "Invalid input", 1, Integer.MAX_VALUE);
+        int duration = Inputter.getAnInteger("Enter exam duration in minutes: ", "Invalid input", 1, 500);
+        int totalMarks = Inputter.getAnInteger("Enter total marks: ", "Invalid input", 1, Integer.MAX_VALUE);
+
+        Date examDate = inputExamDate();  // Replace with your date input method
+
+        return new Exam(0, examName, subjectID, instructorID, examDate, duration, totalMarks);
+    }
+
+    private Date inputExamDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false); // Strict parsing
+        while (true) {
+            String dateInput = Inputter.getString("Enter exam date (dd-MM-yyyy): ", "Date cannot be empty");
+            try {
+                java.util.Date parsedDate = dateFormat.parse(dateInput);
+                return new Date(parsedDate.getTime()); // Convert to java.sql.Date
+            } catch (ParseException e) {
+                System.out.println("Invalid date format. Please try again");
+            }
+        }
     }
 }
