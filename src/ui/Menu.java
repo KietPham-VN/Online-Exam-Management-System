@@ -58,4 +58,5 @@ public class Menu {
     public static boolean isContinue(){
         return isContinue("Do you wish to continue(y/n)? ");
     }
+    
 }

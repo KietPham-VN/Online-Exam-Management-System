@@ -79,7 +79,7 @@ public class Inputter {
 
         while (true) {
             try {
-                System.out.println(inpMsg);
+                System.out.print(inpMsg);
                 int number = Integer.parseInt(sc.nextLine());//
                 if (number < lowerBound || number > upperBound) {
                     System.out.println("The number must be in range of " + lowerBound + " and " + upperBound);
@@ -87,7 +87,7 @@ public class Inputter {
                     return number;
                 }
             } catch (Exception e) {
-                System.out.println(errMsg);
+                System.out.print(errMsg);
             }
         }
     }
@@ -96,12 +96,12 @@ public class Inputter {
     public static double getADouble(String inpMsg, String errMsg) {
         while (true) {
             try {
-                System.out.println(inpMsg);
+                System.out.print(inpMsg);
 
                 double number = Double.parseDouble(sc.nextLine());
                 return number;
             } catch (NumberFormatException e) {
-                System.out.println(errMsg);// hiển thị câu chửi
+                System.out.print(errMsg);// hiển thị câu chửi
             }
         }
     }
@@ -116,7 +116,7 @@ public class Inputter {
             upperBound = tmp;
         }
 
-        System.out.println(inpMsg);
+        System.out.print(inpMsg);
         while (true) {
             try {
                 double number = Double.parseDouble(sc.nextLine());
@@ -125,7 +125,7 @@ public class Inputter {
                 }
                 return number;
             } catch (Exception e) {
-                System.out.println(errMsg);
+                System.out.print(errMsg);
             }
         }
     }
@@ -139,7 +139,7 @@ public class Inputter {
             upperBound = tmp;
         }
 
-        System.out.println(inpMsg);
+        System.out.print(inpMsg);
         while (true) {
             try {
                 String str = sc.nextLine();
@@ -152,7 +152,7 @@ public class Inputter {
                 }
                 return number;
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.print(e);
             }
         }
     }
@@ -165,8 +165,8 @@ public class Inputter {
 
     //5. Hàm nhập chuỗi cấm để trống
     public static String getString(String inpMsg, String errMsg) {
-        System.out.println(inpMsg);
         while (true) {
+            System.out.print(inpMsg);
             try {
                 String str = sc.nextLine();
                 if (str.isEmpty()) {
@@ -181,8 +181,8 @@ public class Inputter {
 
     //6. Hàm nhập chuỗi cấm để trống và phải giống format(regex)  
     public static String getString(String inpMsg, String errMsg, String regex) {
-        System.out.println(inpMsg);
         while (true) {
+            System.out.print(inpMsg);
             try {
                 String str = sc.nextLine();
                 if (str.isEmpty() || !str.matches(regex)) {
@@ -198,7 +198,7 @@ public class Inputter {
     //Get date from string
     public static Date getDate(String dateFormat,String inpMsg, String errMsg, Date min, Date max){
         while(true){
-            System.out.println(inpMsg);
+            System.out.print(inpMsg);
             Date resDate = StringProcessor.parseDate(errMsg, dateFormat);
             
             if(resDate!=null){

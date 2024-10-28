@@ -8,7 +8,7 @@ public class Question {
   private int marks;
   private int examID;
   private int subjectID;
-
+  
   // Constructor
   public Question(int questionID, String questionText, String questionType, int marks, int examID, int subjectID) {
     this.questionID = questionID;
