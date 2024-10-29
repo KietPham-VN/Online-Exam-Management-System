@@ -79,14 +79,15 @@ public class ExamMenu {
         return new Exam(0, examName, subjectID, instructorID, examDate, duration, totalMarks);
     }
 
-    private Date inputExamDate() {
+    public static Date inputExamDate() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         dateFormat.setLenient(false); // Strict parsing
         while (true) {
             String dateInput = Inputter.getString("Enter exam date (dd-MM-yyyy): ", "Date cannot be empty");
             try {
                 java.util.Date parsedDate = dateFormat.parse(dateInput);
-                return new Date(parsedDate.getTime()); // Convert to java.sql.Date
+                if(parsedDate.before(new java.util.Date())) System.out.println("Exam date cannot be earlier than today.");
+                else return new Date(parsedDate.getTime()); // Convert to java.sql.Date
             } catch (ParseException e) {
                 System.out.println("Invalid date format. Please try again");
             }

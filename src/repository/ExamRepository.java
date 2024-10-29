@@ -1,5 +1,6 @@
 package repository;
 
+import data.Choice;
 import data.Exam;
 import data.Question;
 import java.sql.Connection;
@@ -7,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class ExamRepository {
 
@@ -120,41 +122,101 @@ public class ExamRepository {
             deleteChoiceStmt.executeUpdate();
         }
     }
-
-    public boolean checkExamExists(Connection conn, int examID) throws SQLException {
-        String query = "SELECT COUNT(*) FROM tbl_Exams WHERE ExamID = ?";
+    
+    public Exam findExam(Connection conn, int examID) throws SQLException {
+        String query = "SELECT * FROM tbl_Exams WHERE ExamID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, examID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Return true if count is greater than 0
+                // Assuming Exam has a constructor to set its fields from the ResultSet
+                return new Exam(
+                    rs.getInt("ExamID"),
+                    rs.getString("ExamName"),
+                    rs.getInt("SubjectID"),
+                    rs.getInt("InstructorID"),
+                    rs.getDate("ExamDate"),
+                    rs.getInt("Duration"),
+                    rs.getInt("TotalMarks")
+                );
             }
         }
-        return false;
+        return null; // Return null if exam not found
     }
+    
+    public ArrayList<Question> findQuestionsInExam(Connection conn, int examID) throws SQLException {
+       String query = "SELECT * FROM tbl_Questions WHERE ExamID = ?";
+       ArrayList<Question> questions = new ArrayList<>();
 
-    public boolean checkQuestionExists(Connection conn, int questionID) throws SQLException {
-        String query = "SELECT COUNT(*) FROM tbl_Questions WHERE QuestionID = ?";
+       try (PreparedStatement stmt = conn.prepareStatement(query)) {
+           stmt.setInt(1, examID);
+           ResultSet rs = stmt.executeQuery();
+
+           while (rs.next()) {
+               // Create a new Question object for each row in the ResultSet
+               Question question = new Question(
+                   rs.getInt("QuestionID"),
+                   rs.getString("QuestionText"),
+                   rs.getString("QuestionType"),
+                   rs.getInt("Marks"),
+                   rs.getInt("ExamID"),
+                   rs.getInt("SubjectID")
+               );
+               questions.add(question); // Add the Question object to the list
+           }
+       }
+
+       return questions; // Return the list of questions for the exam
+   }
+
+    public Question findQuestion(Connection conn, int questionID) throws SQLException {
+        String query = "SELECT * FROM tbl_Questions WHERE QuestionID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, questionID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Return true if count is greater than 0
+                // Assuming Question has a constructor to set its fields from the ResultSet
+                return new Question(
+                    rs.getInt("QuestionID"),
+                    rs.getString("QuestionText"),
+                    rs.getString("QuestionType"),
+                    rs.getInt("Marks"),
+                    rs.getInt("ExamID"),
+                    rs.getInt("SubjectID")
+                );
             }
         }
-        return false;
+        return null; // Return null if question not found
+    }
+
+    public Choice findChoice(Connection conn, int answerID) throws SQLException {
+        String query = "SELECT * FROM tbl_Choices WHERE ChoiceID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, answerID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Assuming Answer has a constructor to set its fields from the ResultSet
+                return new Choice(
+                    rs.getInt("ChoiceID"),
+                    rs.getInt("QuestionID"),
+                    rs.getString("ChoiceText"),
+                    rs.getBoolean("IsCorrect")
+                );
+            }
+        }
+        return null; // Return null if answer not found
+    }
+
+    public boolean checkExamExists(Connection conn, int examID) throws SQLException {
+       return findExam(conn,examID)!=null;
+    }
+
+    public boolean checkQuestionExists(Connection conn, int questionID) throws SQLException {
+        return findQuestion(conn,questionID)!=null;
     }
     
     public boolean checkChoiceExists(Connection conn, int choiceID) throws SQLException {
-        String query = "SELECT COUNT(*) FROM tbl_Questions WHERE QuestionID = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setInt(1, choiceID);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0; // Return true if count is greater than 0
-            }
-        }
-        return false;
+        return findChoice(conn,choiceID)!=null;
     }
 
     public boolean checkSubjectExists(Connection conn, int subjectID) throws SQLException {
@@ -167,5 +229,45 @@ public class ExamRepository {
             }
         }
         return false;
+    }
+    
+     // Update an exam
+    public void updateExam(Connection conn, int examID, Exam updatedExam) throws SQLException {
+        String updateExamSQL = "UPDATE tbl_Exams SET ExamName = ?, SubjectID = ?, InstructorID = ?, ExamDate = ?, Duration = ?, TotalMarks = ? WHERE ExamID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(updateExamSQL)) {
+            stmt.setString(1, updatedExam.getExamName());
+            stmt.setInt(2, updatedExam.getSubjectID());
+            stmt.setInt(3, updatedExam.getInstructorID());
+            stmt.setDate(4, updatedExam.getExamDate());
+            stmt.setInt(5, updatedExam.getDuration());
+            stmt.setInt(6, updatedExam.getTotalMarks());
+            stmt.setInt(7, examID);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Update a question
+    public void updateQuestion(Connection conn, int questionID, Question updatedQuestion) throws SQLException {
+        String updateQuestionSQL = "UPDATE tbl_Questions SET QuestionText = ?, QuestionType = ?, Marks = ?, ExamID = ?, SubjectID = ? WHERE QuestionID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(updateQuestionSQL)) {
+            stmt.setString(1, updatedQuestion.getQuestionText());
+            stmt.setString(2, updatedQuestion.getQuestionType());
+            stmt.setInt(3, updatedQuestion.getMarks());
+            stmt.setInt(4, updatedQuestion.getExamID());
+            stmt.setInt(5, updatedQuestion.getSubjectID());
+            stmt.setInt(6, questionID);
+            stmt.executeUpdate();
+        }
+    }
+
+    // Update a choice
+    public void updateChoice(Connection conn, int choiceID, String choiceText, boolean isCorrect) throws SQLException {
+        String updateChoiceSQL = "UPDATE tbl_Choices SET ChoiceText = ?, IsCorrect = ? WHERE ChoiceID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(updateChoiceSQL)) {
+            stmt.setString(1, choiceText);
+            stmt.setBoolean(2, isCorrect);
+            stmt.setInt(3, choiceID);
+            stmt.executeUpdate();
+        }
     }
 }
