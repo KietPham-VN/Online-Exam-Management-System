@@ -26,10 +26,10 @@ public class App {
 
   @SuppressWarnings("deprecation")
   public static void main(String[] args) {
-    String server = "urjellyfish.mssql.somee.com";
+    String server = "Online-Exam-Management-System.mssql.somee.com";
     String user = "urjellyfish_SQLLogin_1";
     String password = "5medi3d4w6";
-    String db = "urjellyfish";
+    String db = "Online-Exam-Management-System";
     int port = 1433;
     SQLServerDataSource ds = new SQLServerDataSource();
     ds.setUser(user);
