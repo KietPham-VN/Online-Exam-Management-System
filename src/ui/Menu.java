@@ -33,7 +33,7 @@ public class Menu {
 
     // hàm lấy lựa chọn từ người đùng
     public int getChoice() {
-        int choice = Inputter.getAnInteger("Input your choice: ", "That field is required");
+        int choice = Inputter.getAnInteger("Input your choice: ", "That field is required",1,optionList.size());
         return choice;
     }
 

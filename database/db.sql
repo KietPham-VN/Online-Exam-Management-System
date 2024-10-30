@@ -1,4 +1,4 @@
-﻿USE master
+﻿USE Online_Exam_Management_System
 
 CREATE DATABASE Online_Exam_Management_System
 GO

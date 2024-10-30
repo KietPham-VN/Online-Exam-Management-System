@@ -11,11 +11,21 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import controller.UserController;
+import data.User;
+import db.database;
+import interfaces.repository.IUserRepository;
+import java.sql.Connection;
+import java.util.ArrayList;
+import repository.UserRepository;
+import ui.AdminMenu;
+import ui.InstructorMenu;
+import ui.StudentMenu;
 
 public class App {
 
   @SuppressWarnings("deprecation")
-  public static void main(String[] args) throws SQLException {
+  public static void main(String[] args) {
     String server = "urjellyfish.mssql.somee.com";
     String user = "urjellyfish_SQLLogin_1";
     String password = "5medi3d4w6";
@@ -87,4 +97,5 @@ public class App {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, "SQL error: ", e);
         }
     }
-}
+ 
+  }
