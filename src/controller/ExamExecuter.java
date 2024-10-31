@@ -234,4 +234,65 @@ public class ExamExecuter {
         }
         System.out.println("Your exam has been submitted.");
     }
+    
+    public static void assignExamToStudent(Connection conn, Scanner scanner) {
+        try {
+            System.out.print("Enter ExamID to assign: ");
+            int examID = scanner.nextInt();
+            System.out.print("Enter StudentID to assign the exam: ");
+            int studentID = scanner.nextInt();
+
+            if (!isValidExamID(conn, examID)) {
+                System.out.println("Invalid ExamID. Please check and try again.");
+                return;
+            }
+
+            if (!isValidStudentID(conn, studentID)) {
+                System.out.println("Invalid StudentID. Please check and try again.");
+                return;
+            }
+
+            if (isExamAssignedToStudent(conn, examID, studentID)) {
+                System.out.println("Exam has already been assigned to this student.");
+                return;
+            }
+
+            assignExam(conn, examID, studentID);
+            System.out.println("Exam assigned successfully to student with ID: " + studentID);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Kiểm tra StudentID có hợp lệ không
+    private static boolean isValidStudentID(Connection conn, int studentID) throws SQLException {
+        String query = "SELECT COUNT(*) FROM tbl_Users WHERE UserID = ? AND Role = 'Student'";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, studentID);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        }
+    }
+
+    // Kiểm tra xem kỳ thi đã được giao cho học sinh chưa
+    private static boolean isExamAssignedToStudent(Connection conn, int examID, int studentID) throws SQLException {
+        String query = "SELECT COUNT(*) FROM tbl_StudentExams WHERE ExamID = ? AND StudentID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, examID);
+            pstmt.setInt(2, studentID);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        }
+    }
+
+    // Giao kỳ thi cho học sinh (chèn vào bảng tbl_StudentExams)
+    private static void assignExam(Connection conn, int examID, int studentID) throws SQLException {
+        String insertSQL = "INSERT INTO tbl_StudentExams (ExamID, StudentID, IsCompleted) VALUES (?, ?, 0)";
+        try (PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+            pstmt.setInt(1, examID);
+            pstmt.setInt(2, studentID);
+            pstmt.executeUpdate();
+        }
+    }
 }
