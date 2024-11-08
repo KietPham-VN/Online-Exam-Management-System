@@ -5,39 +5,47 @@
  */
 package ui;
 
+import controller.ExamExecuter;
 import controller.UserController;
 import data.User;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  *
  * @author NGHIA
  */
 public class StudentMenu {
-        private User user;
+
+    private User user;
     private UserController userController;
-    public StudentMenu(User user,UserController userController){
-        this.user=user;
+    private Scanner scanner = new Scanner(System.in);
+
+    public StudentMenu(User user, UserController userController) {
+        this.user = user;
         this.userController = userController;
     }
     
-    public void Print(){
-        while(true){
-            Menu adminMenu = new Menu("Welcome back, "+user.getUsername()+" | Mode: Student");
-            adminMenu.addNewOption("Do exams");
-            adminMenu.addNewOption("View exam grades");
-            adminMenu.addNewOption("Reset password");
-            adminMenu.addNewOption("Logout");
+    public void Print(Connection conn) throws SQLException{
+        while (true) {
+            Menu adminMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Student");
+            adminMenu.addNewOption("1. Do exams");
+            adminMenu.addNewOption("2. View exam grades");
+            adminMenu.addNewOption("3. Reset password");
+            adminMenu.addNewOption("4. Logout");
             
-            int choice=adminMenu.getChoice();
-            switch(choice){
-                case 1:{
+            int choice = adminMenu.getChoice();
+            switch (choice) {
+                case 1: {
+                    ExamExecuter.runExam(conn, scanner);
                 }
-                case 2:{
+                case 2: {
                 }
-                case 3:{
+                case 3: {
                     userController.printResetPassword(user.getUserID());
                 }
-                case 4:{
+                case 4: {
                     return;
                 }
             }

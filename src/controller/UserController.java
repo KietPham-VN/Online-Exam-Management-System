@@ -45,7 +45,7 @@ public class UserController {
                 name = Inputter.getString("Enter name: ","Name must not be empty and have less or equal to 50 characters","^.{1,50}$");
             }
             
-            String password = Inputter.getString("Enter password: ","Passowrd must not be empty and have more than 8 characters","^.{8,}$");
+            String password = Inputter.getString("Enter password: ","Password must not be empty and have more than 8 characters","^.{8,}$");
             String email = Inputter.getString("Enter email: ","Please enter a valid email address","^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
             String role = Inputter.getString("Enter role: ","Role must be Admin|Instructor|Student","^(Admin|Instructor|Student)$");
 
