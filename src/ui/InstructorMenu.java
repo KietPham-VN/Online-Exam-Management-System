@@ -31,6 +31,7 @@ public class InstructorMenu {
             int choice=adminMenu.getChoice();
             switch(choice){
                 case 1:{
+                    
                 }
                 case 2:{
                 }

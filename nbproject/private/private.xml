@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/ui/Menu.java</file>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/ui/InstructorMenu.java</file>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/runtime/App.java</file>
@@ -13,9 +11,6 @@
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/data/Question.java</file>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/controller/UserController.java</file>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/utils/Inputter.java</file>
-=======
-            <file>file:/D:/F_CODE/CrewBE/BE2/Online-Exam-Management-System/src/runtime/App.java</file>
->>>>>>> 50fbf94c8c47c391e3dcff28d7764b4d3d19d36f
         </group>
     </open-files>
 </project-private>
