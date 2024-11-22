@@ -26,7 +26,7 @@ public class InstructorMenu {
         this.userController = userController;
     }
 
-    SubMenu subMenu = new SubMenu();
+    ExamSubMenu subMenu = new ExamSubMenu();
     
     public void Print(Connection conn) {
         while (true) {

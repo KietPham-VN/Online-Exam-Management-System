@@ -16,19 +16,17 @@ import utils.Inputter;
  *
  * @author Hoang Tran
  */
-public class SubMenu {
+public class ExamSubMenu {
 
-    private Connection conn;
     private CreateExamController createExam;
     private UpdateExamController updateExam;
     private DeleteController deleteExam;
 
-    public SubMenu() {
+    public ExamSubMenu() {
     }
     
 
-    public SubMenu(Connection conn, CreateExamController createExam, UpdateExamController updateExam, DeleteController deleteExam) {
-        this.conn = conn;
+    public ExamSubMenu(CreateExamController createExam, UpdateExamController updateExam, DeleteController deleteExam) {
         this.createExam = createExam;
         this.updateExam = updateExam;
         this.deleteExam = deleteExam;
@@ -45,14 +43,14 @@ public class SubMenu {
         switch (choice) {
             case 1:
                 try {
-                    createExam.addExam(conn);
+                    createExam.addExam();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed adding exam: " + e.getMessage());
                 }
             case 2:
                 try {
-                    createExam.addQuestion(conn);
+                    createExam.addQuestion();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed adding question: " + e.getMessage());
@@ -61,7 +59,7 @@ public class SubMenu {
             case 3:
                 try {
                     int questionID = Inputter.getAnInteger("Enter the Question ID to add choices: ", "Invalid input.");
-                    createExam.addChoices(conn, questionID);
+                    createExam.addChoices(questionID);
                     break;
                 } catch (SQLException e) {
                     System.out.println("Falied adding choice: " + e.getMessage());
@@ -84,21 +82,21 @@ public class SubMenu {
         switch (choice) {
             case 1:
                 try {
-                    updateExam.updateExam(conn);
+                    updateExam.updateExam();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed updating exam" + e.getMessage());
                 }
             case 2:
                 try {
-                    updateExam.updateQuestion(conn);
+                    updateExam.updateQuestion();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed updating question" + e.getMessage());
                 }
             case 3:
                 try {
-                    updateExam.updateChoice(conn);
+                    updateExam.updateChoice();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed updating choice" + e.getMessage());
@@ -120,21 +118,21 @@ public class SubMenu {
         switch (choice) {
             case 1:
                 try {
-                    deleteExam.deleteExam(conn);
+                    deleteExam.deleteExam();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed deleting exam: " + e.getMessage());
                 }
             case 2:
                 try {
-                    deleteExam.deleteQuestion(conn);
+                    deleteExam.deleteQuestion();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed deleting question: " + e.getMessage());
                 }
             case 3:
                 try {
-                    deleteExam.deleteChoice(conn);
+                    deleteExam.deleteChoice();
                     break;
                 } catch (SQLException e) {
                     System.out.println("Failed deleting choice: " + e.getMessage());

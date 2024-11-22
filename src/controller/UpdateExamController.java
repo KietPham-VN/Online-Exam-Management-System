@@ -25,13 +25,15 @@ import utils.StringProcessor;
 public class UpdateExamController {
     private final ExamRepository examRepository;
     private final ValidationMarks validMarks;
+    private final Connection conn;
 
-    public UpdateExamController() {
+    public UpdateExamController(Connection conn) {
         this.examRepository = new ExamRepository();
         this.validMarks = new ValidationMarks();
+        this.conn = conn;
     }
 
-    public void updateExam(Connection conn) throws SQLException {
+    public void updateExam() throws SQLException {
         int examID = Inputter.getAnInteger("Enter the Exam ID to update: ", "Exam ID cannot be empty");
         Exam existedExam = examRepository.findExam(conn, examID);
         if (existedExam==null) {
@@ -93,14 +95,14 @@ public class UpdateExamController {
             else break;
         }
 
-        updateQuestionMarks(conn,totalMarks,examID);
+        updateQuestionMarks(totalMarks,examID);
 
         Exam updatedExam = new Exam(examID, examName, subjectID, existedExam.getInstructorID(), new java.sql.Date(examDate.getTime()), duration, totalMarks);
         examRepository.updateExam(conn, examID, updatedExam);
         System.out.println("Exam updated successfully.");
     }
 
-    public void updateQuestion(Connection conn) throws SQLException {
+    public void updateQuestion() throws SQLException {
         int questionID = Inputter.getAnInteger("Enter the Question ID to update: ", "Question ID cannot be empty");
         Question existedQuestion = examRepository.findQuestion(conn, questionID);
         if (existedQuestion==null) {
@@ -154,7 +156,7 @@ public class UpdateExamController {
         System.out.println("Question updated successfully.");
     }
 
-    public void updateChoice(Connection conn) throws SQLException {
+    public void updateChoice() throws SQLException {
         int choiceID = Inputter.getAnInteger("Enter the Choice ID to update: ", "Choice ID cannot be empty");
         Choice existedChoice = examRepository.findChoice(conn, choiceID);
         if (existedChoice==null) {
@@ -170,7 +172,7 @@ public class UpdateExamController {
         System.out.println("Choice updated successfully.");
     }
     
-    private void updateQuestionMarks(Connection conn,int totalMark,int examId) throws SQLException{
+    private void updateQuestionMarks(int totalMark,int examId) throws SQLException{
         while(true){
             ArrayList<Question> questions = examRepository.findQuestionsInExam(conn, examId);
             int currMarks = questions.stream().mapToInt(q->q.getMarks()).sum();

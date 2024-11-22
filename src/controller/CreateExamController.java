@@ -19,14 +19,17 @@ public class CreateExamController {
 
     private final ExamRepository examRepository;
     private final ValidationMarks validMarks;
-
+    private final Connection conn;
+    
     //Pass in the exam model here
-    public CreateExamController() {
+
+    public CreateExamController(Connection conn) {
         this.examRepository = new ExamRepository();
         this.validMarks = new ValidationMarks();
+        this.conn = conn;
     }
 
-    public void addExam(Connection conn) throws SQLException {
+    public void addExam() throws SQLException {
         ExamMenu examMenu = new ExamMenu();
         boolean choice = true;
         do {
@@ -38,7 +41,7 @@ public class CreateExamController {
     }
 
     //Thêm câu hỏi
-    public void addQuestion(Connection conn) throws SQLException {
+    public void addQuestion() throws SQLException {
         while (true) {
         String questionText = Inputter.getString("Enter the question text: ", "Question cannot be empty");
         String questionType = Inputter.getString("Enter question type [MCQ|ShortAnswer]: ", "Please enter MCQ or ShortAnswer", "^(MCQ|ShortAnswer)$");
@@ -83,7 +86,7 @@ public class CreateExamController {
         System.out.println("Question added successfully.");
 
         // Add choices for the question if needed
-        addChoices(conn, questionData.getQuestionID());
+        addChoices(questionData.getQuestionID());
 
         // Option to continue adding questions
         boolean continueAdding = Menu.isContinue("Do you want to add another question?[Y/N]: ");
@@ -93,7 +96,7 @@ public class CreateExamController {
     }
 }
 
-    public void addChoices(Connection conn, int questionID) throws SQLException {
+    public void addChoices(int questionID) throws SQLException {
         boolean isQuestionValid = examRepository.checkQuestionExists(conn, questionID);
         if (!isQuestionValid) {
             System.out.println("Question ID not found.");

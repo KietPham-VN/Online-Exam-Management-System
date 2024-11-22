@@ -61,7 +61,7 @@ public class UserController {
             }
             
             
-            //Print out the newly registered user
+            //Print out the newly registered user/
             if(!Menu.isContinue("Do you want to register more users (y/n)?")) return;
         }
     }
