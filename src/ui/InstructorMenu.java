@@ -5,40 +5,56 @@
  */
 package ui;
 
+import controller.ExamExecuter;
 import controller.UserController;
 import data.User;
+import java.sql.Connection;
+import java.util.Scanner;
 
 /**
  *
  * @author NGHIA
  */
 public class InstructorMenu {
-    private User user;
-    private UserController userController;
-    public InstructorMenu(User user,UserController userController){
-        this.user=user;
+
+    private final User user;
+    private final UserController userController;
+    private final ExamExecuter examExecuter;
+    private final ExamSubMenu examSubMenu;
+    private final Scanner scanner = new Scanner(System.in);
+
+    public InstructorMenu(User user, UserController userController, ExamExecuter examExecuter, ExamSubMenu examSubMenu) {
+        this.user = user;
         this.userController = userController;
+        this.examExecuter = examExecuter;
+        this.examSubMenu = examSubMenu;
     }
-    
-    public void Print(){
-        while(true){
-            Menu adminMenu = new Menu("Welcome back, "+user.getUsername()+" | Mode: Instructor");
+
+    public void Print(Connection conn) {
+        while (true) {
+            Menu adminMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Instructor");
             adminMenu.addNewOption("Manage subjects and exams");
             adminMenu.addNewOption("Assign exams");
             adminMenu.addNewOption("Reset password");
             adminMenu.addNewOption("Logout");
+
+            int choice = adminMenu.getChoice();
             
-            int choice=adminMenu.getChoice();
-            switch(choice){
-                case 1:{
-                    
+
+            switch (choice) {
+                case 1: {
+                    examSubMenu.manageExams();
+                    break;
                 }
-                case 2:{
+                case 2: {
+                    examExecuter.assignExamToStudent( scanner);
+                    break;
                 }
-                case 3:{
+                case 3: {
                     userController.printResetPassword(user.getUserID());
+                    break;
                 }
-                case 4:{
+                case 4: {
                     return;
                 }
             }

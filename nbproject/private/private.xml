@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/ui/Menu.java</file>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/ui/InstructorMenu.java</file>
@@ -12,5 +13,8 @@
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/controller/UserController.java</file>
             <file>file:/C:/Users/NGHIA/Documents/BE2/Online-Exam-Management-System/src/utils/Inputter.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> Tran
     </open-files>
 </project-private>

@@ -67,6 +67,8 @@ public class Inputter {
             }
         }
     }
+    
+    
 
     //2. method ép người dùng nhập số nguyên chuẩn nhưng phải trong khoảng
     public static int getAnInteger(String inpMsg, String errMsg,

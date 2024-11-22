@@ -14,15 +14,17 @@ import utils.Inputter;
  *
  * @author Hoang Tran
  */
-public class DeleteController {
+public class DeleteExamController {
 
     private final ExamRepository examRepository;
+    private final Connection conn;
 
-    public DeleteController() {
+    public DeleteExamController(Connection conn) {
         this.examRepository = new ExamRepository();
+        this.conn = conn;
     }
 
-    public void deleteExam(Connection conn) throws SQLException {
+    public void deleteExam() throws SQLException {
         int examID = Inputter.getAnInteger("Enter examID you want to delete: ", "ExamID cannot be empty");
         if (!examRepository.checkExamExists(conn, examID)) {
             System.out.println("Exam ID not found");
@@ -32,12 +34,11 @@ public class DeleteController {
                 System.out.println("Exam with ID " + examID + " and all related data deleted successfully.");
             } catch (SQLException e) {
                 System.err.println("Error deleting exam: " + e.getMessage());
-                throw e;
             }
         }
     }
 
-    public void deleteQuestion(Connection conn) throws SQLException {
+    public void deleteQuestion() throws SQLException {
         int questionID = Inputter.getAnInteger("Enter questionID you want to delete: ", "QuestionID cannot be empty");
         if (!examRepository.checkQuestionExists(conn, questionID)) {
             System.out.println("Question ID not found");
@@ -47,12 +48,11 @@ public class DeleteController {
                 System.out.println("Question with ID " + questionID + " and all related choices deleted successfully.");
             } catch (SQLException e) {
                 System.err.println("Error deleting question: " + e.getMessage());
-                throw e;
             }
         }
     }
 
-    public void deleteChoice(Connection conn) throws SQLException {
+    public void deleteChoice() throws SQLException {
         int choiceID = Inputter.getAnInteger("Enter choiceID you want to delete: ", "ChoiceID cannot be empty");
         if (!examRepository.checkChoiceExists(conn, choiceID)) {
             System.out.println("Choice ID not found");
@@ -62,7 +62,6 @@ public class DeleteController {
                 System.out.println("Choice with ID " + choiceID + " deleted successfully.");
             } catch (SQLException e) {
                 System.err.println("Error deleting choice: " + e.getMessage());
-                throw e;
             }
         }
     }
