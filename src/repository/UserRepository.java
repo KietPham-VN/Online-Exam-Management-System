@@ -5,6 +5,7 @@
  */
 package repository;
 
+import data.GradeReport;
 import data.User;
 import interfaces.repository.IUserRepository;
 import java.sql.Connection;
@@ -161,6 +162,35 @@ public class UserRepository implements IUserRepository {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;    
+    }
+
+    @Override
+    public ArrayList<GradeReport> FindStudentGrade(int userID) {
+        ArrayList<GradeReport> grades = new ArrayList<>();
+        String findStudentGrade = "SELECT ExamName, TotalScore "
+                + "FROM tbl_StudentExams "
+                + "JOIN tbl_Grades ON tbl_StudentExams.StudentExamID = tbl_Grades.StudentExamID "
+                + "JOIN tbl_Exams ON  tbl_Exams.ExamID = tbl_StudentExams.ExamID "
+                + "WHERE tbl_StudentExams.StudentID = ? "
+                + "ORDER BY tbl_Grades.GradeAt DESC";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(findStudentGrade)) {
+            stmt.setInt(1, userID);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                String examName = resultSet.getString("ExamName");
+                int score = resultSet.getInt("TotalScore");
+
+                GradeReport grade = new GradeReport(score,examName);
+                grades.add(grade);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return grades;
     }
     
 }

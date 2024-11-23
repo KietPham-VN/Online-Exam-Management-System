@@ -5,6 +5,7 @@
  */
 package interfaces.repository;
 
+import data.GradeReport;
 import data.User;
 import java.util.ArrayList;
 
@@ -19,4 +20,5 @@ public interface IUserRepository {
     public ArrayList<User> FindUsers(String userName);
     public User FindSingleUser(String userName);
     public int ResetPasword(int userID,String newPassword);
+    public ArrayList<GradeReport> FindStudentGrade(int userID);
 }

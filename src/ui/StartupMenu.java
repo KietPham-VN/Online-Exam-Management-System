@@ -45,6 +45,8 @@ public class StartupMenu {
             User loginUser;
             //Check if there a user in the system
             ArrayList<User> users = userRepo.FindUsers("");
+
+            System.out.println("*****WELCOME TO ONLINE EXAM MANAGEMENT*****");
             if (users.isEmpty()) {
                 System.out.println("Cannot find a single user. Please register a new user as an admin.");
                 loginUser = userController.printRegisterWithNoUsers();

@@ -5,8 +5,10 @@
  */
 package controller;
 
+import data.GradeReport;
 import data.User;
 import interfaces.repository.IUserRepository;
+import java.util.ArrayList;
 import ui.Menu;
 import utils.Inputter;
 
@@ -97,6 +99,18 @@ public class UserController {
                 System.out.println("Password reset failed");
             }
         }
-        
+    }
+    
+    public void printStudentGrade(int userID){
+        while(true){
+            ArrayList<GradeReport> grades = userRepository.FindStudentGrade(userID);
+            
+            if(grades.size()>0){
+                for(int i=0;i<grades.size();i++){
+                    System.out.printf("Exam name: %s; Score: %d",grades.get(i).getExamName(),grades.get(i).getScore());
+                }
+            }
+            else System.out.println("You have done 0 exams");
+        }
     }
 }

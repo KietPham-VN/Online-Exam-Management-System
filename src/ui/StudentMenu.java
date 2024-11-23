@@ -43,6 +43,7 @@ public class StudentMenu {
                     examExecuter.runExam(scanner);
                 }
                 case 2: {
+                    userController.printStudentGrade(user.getUserID());
                 }
                 case 3: {
                     userController.printResetPassword(user.getUserID());
