@@ -27,6 +27,7 @@ public class AdminMenu {
             adminMenu.addNewOption("Reset password");
             adminMenu.addNewOption("Logout");
             
+            adminMenu.print();
             int choice=adminMenu.getChoice();
             switch(choice){
                 case 1:{

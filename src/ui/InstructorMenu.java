@@ -32,13 +32,14 @@ public class InstructorMenu {
 
     public void Print(Connection conn) {
         while (true) {
-            Menu adminMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Instructor");
-            adminMenu.addNewOption("Manage subjects and exams");
-            adminMenu.addNewOption("Assign exams");
-            adminMenu.addNewOption("Reset password");
-            adminMenu.addNewOption("Logout");
+            Menu instructorMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Instructor");
+            instructorMenu.addNewOption("Manage subjects and exams");
+            instructorMenu.addNewOption("Assign exams");
+            instructorMenu.addNewOption("Reset password");
+            instructorMenu.addNewOption("Logout");
 
-            int choice = adminMenu.getChoice();
+            instructorMenu.print();
+            int choice = instructorMenu.getChoice();
             
 
             switch (choice) {

@@ -31,13 +31,15 @@ public class StudentMenu {
     
     public void Print(Connection conn) throws SQLException{
         while (true) {
-            Menu adminMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Student");
-            adminMenu.addNewOption("Do exams");
-            adminMenu.addNewOption("View exam grades");
-            adminMenu.addNewOption("Reset password");
-            adminMenu.addNewOption("Logout");
+            Menu studentMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Student");
+            studentMenu.addNewOption("Do exams");
+            studentMenu.addNewOption("View exam grades");
+            studentMenu.addNewOption("Reset password");
+            studentMenu.addNewOption("Logout");
             
-            int choice = adminMenu.getChoice();
+            studentMenu.print();
+            
+            int choice = studentMenu.getChoice();
             switch (choice) {
                 case 1: {
                     examExecuter.runExam(scanner);
