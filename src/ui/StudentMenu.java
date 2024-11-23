@@ -42,7 +42,7 @@ public class StudentMenu {
             int choice = studentMenu.getChoice();
             switch (choice) {
                 case 1: {
-                    examExecuter.runExam(scanner);
+                    examExecuter.runExam(scanner, user.getUsername());
                     break;
                 }
                 case 2: {
