@@ -37,7 +37,7 @@ public class ExamSubMenu {
             System.out.print("2. Add new question to exam: ");
             System.out.print("3. Add new choice to question: ");
             System.out.println("4. Back to main menu");
-            int choice = instructorMenu.getChoice();
+            int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 4);
 
             switch (choice) {
                 case 1:
@@ -78,7 +78,7 @@ public class ExamSubMenu {
             System.out.println("2. Update question: ");
             System.out.println("3. Update choice: ");
             System.out.println("4. Back to main menu");
-            int choice = instructorMenu.getChoice();
+            int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 4);
 
             switch (choice) {
                 case 1:
@@ -117,7 +117,7 @@ public class ExamSubMenu {
             System.out.println("1. Delete exam");
             System.out.println("2. Delete question");
             System.out.println("3. Delete choice");
-            int choice = instructorMenu.getChoice();
+            int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 3);
 
             switch (choice) {
                 case 1:
@@ -153,11 +153,11 @@ public class ExamSubMenu {
     }
 
     public void manageExams() {
-        System.out.print("1. Add exam: ");
-        System.out.print("2. Update exam: ");
-        System.out.print("3. Delete exam: ");
+        System.out.println("1. Add exam: ");
+        System.out.println("2. Update exam: ");
+        System.out.println("3. Delete exam: ");
         System.out.println("");
-        int choice = instructorMenu.getChoice();
+        int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 3);
 
         switch (choice) {
             case 1:
