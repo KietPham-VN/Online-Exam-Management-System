@@ -60,14 +60,17 @@ public class StartupMenu {
                 case "admin": {
                     AdminMenu adminMenu = new AdminMenu(loginUser, userController);
                     adminMenu.Print();
+                    break;
                 }
                 case "instructor": {
                     InstructorMenu instructorMenu = new InstructorMenu(loginUser, userController, examExecuter, examSubMenu);
                     instructorMenu.Print(conn);
+                    break;
                 }
                 case "student": {
                     StudentMenu studentMenu = new StudentMenu(loginUser, userController,examExecuter);
                     studentMenu.Print(conn);
+                    break;
                 }
             }
         } catch (Exception ex) {
