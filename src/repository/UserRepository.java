@@ -172,7 +172,7 @@ public class UserRepository implements IUserRepository {
                 + "JOIN tbl_Grades ON tbl_StudentExams.StudentExamID = tbl_Grades.StudentExamID "
                 + "JOIN tbl_Exams ON  tbl_Exams.ExamID = tbl_StudentExams.ExamID "
                 + "WHERE tbl_StudentExams.StudentID = ? "
-                + "ORDER BY tbl_Grades.GradeAt DESC";
+                + "ORDER BY tbl_Grades.GradedAt DESC";
         
         try (PreparedStatement stmt = conn.prepareStatement(findStudentGrade)) {
             stmt.setInt(1, userID);
