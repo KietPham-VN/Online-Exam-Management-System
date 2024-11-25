@@ -16,6 +16,7 @@ import interfaces.repository.IUserRepository;
 import java.sql.Connection;
 import java.util.ArrayList;
 import repository.UserRepository;
+import utils.Inputter;
 
 /**
  *
@@ -42,35 +43,46 @@ public class StartupMenu {
             DeleteExamController deleteExamController = new DeleteExamController(conn);
             ExamSubMenu examSubMenu = new ExamSubMenu(createExamController,updateExamController,deleteExamController);
 
-            User loginUser;
-            //Check if there a user in the system
-            ArrayList<User> users = userRepo.FindUsers("");
-            
-            System.out.println("*****WELCOME TO ONLINE EXAM MANAGEMENT*****");
-            if (users.isEmpty()) {
-                System.out.println("Cannot find a single user. Please register a new user as an admin.");
-                loginUser = userController.printRegisterWithNoUsers();
-            } else {
-                System.out.println("Login in");
-                loginUser = userController.printLogin();
-            }
+            while(true){
+                System.out.println("*****WELCOME TO ONLINE EXAM MANAGEMENT*****");
+                System.out.println("1. Login");
+                System.out.println("2. Exit");
+                int choice = Inputter.getAnInteger("Enter your choice: ","Please enter either 1 or 2",3,0);
+                
+                switch(choice){
+                    case 1:
+                        User loginUser;
+                        //Check if there a user in the system
+                        ArrayList<User> users = userRepo.FindUsers("");
+                        if (users.isEmpty()) {
+                            System.out.println("Cannot find a single user. Please register a new user as an admin.");
+                            loginUser = userController.printRegisterWithNoUsers();
+                        } else {
+                            System.out.println("Login in");
+                            loginUser = userController.printLogin();
+                        }
 
-            //Pass loginuser to more controller
-            switch (loginUser.getRole().toLowerCase()) {
-                case "admin": {
-                    AdminMenu adminMenu = new AdminMenu(loginUser, userController);
-                    adminMenu.Print();
-                    break;
-                }
-                case "instructor": {
-                    InstructorMenu instructorMenu = new InstructorMenu(loginUser, userController, examExecuter, examSubMenu);
-                    instructorMenu.Print(conn);
-                    break;
-                }
-                case "student": {
-                    StudentMenu studentMenu = new StudentMenu(loginUser, userController,examExecuter);
-                    studentMenu.Print(conn);
-                    break;
+                        //Pass loginuser to more controller
+                        switch (loginUser.getRole().toLowerCase()) {
+                            case "admin": {
+                                AdminMenu adminMenu = new AdminMenu(loginUser, userController);
+                                adminMenu.Print();
+                                break;
+                            }
+                            case "instructor": {
+                                InstructorMenu instructorMenu = new InstructorMenu(loginUser, userController, examExecuter, examSubMenu);
+                                instructorMenu.Print(conn);
+                                break;
+                            }
+                            case "student": {
+                                StudentMenu studentMenu = new StudentMenu(loginUser, userController,examExecuter);
+                                studentMenu.Print(conn);
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        return;
                 }
             }
         } catch (Exception ex) {
