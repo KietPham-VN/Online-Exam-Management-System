@@ -8,7 +8,6 @@ package ui;
 import controller.CreateExamController;
 import controller.DeleteExamController;
 import controller.UpdateExamController;
-import java.sql.Connection;
 import java.sql.SQLException;
 import utils.Inputter;
 
@@ -33,9 +32,9 @@ public class ExamSubMenu {
 
     private void addController() {
         while(true){
-            System.out.print("1. Add new exam: ");
-            System.out.print("2. Add new question to exam: ");
-            System.out.print("3. Add new choice to question: ");
+            System.out.println("1. Add new exam: ");
+            System.out.println("2. Add new question to exam: ");
+            System.out.println("3. Add new choice to question: ");
             System.out.println("4. Back to main menu");
             int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 4);
 
@@ -74,9 +73,9 @@ public class ExamSubMenu {
 
    private void updateController() {
        while(true){
-            System.out.println("1. Update exam: ");
-            System.out.println("2. Update question: ");
-            System.out.println("3. Update choice: ");
+            System.out.println("1. Update exam");
+            System.out.println("2. Update question");
+            System.out.println("3. Update choice");
             System.out.println("4. Back to main menu");
             int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 4);
 
@@ -117,6 +116,7 @@ public class ExamSubMenu {
             System.out.println("1. Delete exam");
             System.out.println("2. Delete question");
             System.out.println("3. Delete choice");
+            System.out.println("4. Back to main menu");
             int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 3);
 
             switch (choice) {
@@ -153,11 +153,11 @@ public class ExamSubMenu {
     }
 
     public void manageExams() {
-        System.out.println("1. Add exam: ");
-        System.out.println("2. Update exam: ");
-        System.out.println("3. Delete exam: ");
-        System.out.println("");
-        int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 3);
+        System.out.println("1. Add exam");
+        System.out.println("2. Update exam");
+        System.out.println("3. Delete exam");
+        System.out.println("4. Back to main menu");
+        int choice = Inputter.getAnInteger("Input your choice:", "Invalid input",1, 4);
 
         switch (choice) {
             case 1:
@@ -169,6 +169,11 @@ public class ExamSubMenu {
             case 3:
                 deleteController();
                 break;
+            case 4:
+                System.out.println("Exiting....");
+                return;
+            default:
+                System.out.println("Invalid choice");
         }
     }
 }
