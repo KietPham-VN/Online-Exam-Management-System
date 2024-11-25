@@ -124,7 +124,7 @@ public class UserRepository implements IUserRepository {
     @Override
     public User FindSingleUser(String userName) {
         User user = null;
-        String selectSql = "SELECT * FROM tbl_Users WHERE Username WHERE ?";
+        String selectSql = "SELECT * FROM tbl_Users WHERE Username = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(selectSql)) {
             stmt.setString(1, userName);

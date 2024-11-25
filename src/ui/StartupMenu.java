@@ -42,36 +42,6 @@ public class StartupMenu {
             UpdateExamController updateExamController = new UpdateExamController(conn);
             DeleteExamController deleteExamController = new DeleteExamController(conn);
             ExamSubMenu examSubMenu = new ExamSubMenu(createExamController,updateExamController,deleteExamController);
-
-<<<<<<< Updated upstream
-            User loginUser;
-            //Check if there a user in the system
-            ArrayList<User> users = userRepo.FindUsers("");
-
-            System.out.println("*****WELCOME TO ONLINE EXAM MANAGEMENT*****");
-            if (users.isEmpty()) {
-                System.out.println("Cannot find a single user. Please register a new user as an admin.");
-                loginUser = userController.printRegisterWithNoUsers();
-            } else {
-                System.out.println("Login in");
-                loginUser = userController.printLogin();
-            }
-
-            //Pass loginuser to more controller
-            switch (loginUser.getRole()) {
-                case "admin": {
-                    AdminMenu adminMenu = new AdminMenu(loginUser, userController);
-                    adminMenu.Print();
-                }
-                case "instructor": {
-                    InstructorMenu instructorMenu = new InstructorMenu(loginUser, userController, examExecuter, examSubMenu);
-                    instructorMenu.Print(conn);
-                }
-                case "student": {
-                    StudentMenu studentMenu = new StudentMenu(loginUser, userController,examExecuter);
-                    studentMenu.Print(conn);
-=======
-            
             
             while(true){
                 System.out.println("*****WELCOME TO ONLINE EXAM MANAGEMENT*****");
@@ -113,7 +83,6 @@ public class StartupMenu {
                         break;
                     case 2:
                         return;
->>>>>>> Stashed changes
                 }
             }
         } catch (Exception ex) {
