@@ -98,9 +98,12 @@ public class UserRepository implements IUserRepository {
     public ArrayList<User> FindUsers(String userName) {
         ArrayList<User> users = new ArrayList<>();
         String selectSql = (userName.isEmpty())?"SELECT * FROM tbl_Users"
-                : "SELECT * FROM tbl_Users WHERE Username LIKE "+"'%"+userName+"'";
+                : "SELECT * FROM tbl_Users WHERE Username LIKE ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(selectSql)) {
+            if (!userName.isEmpty()) {
+                stmt.setString(1, "%" + userName + "%");
+            }
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -110,8 +113,10 @@ public class UserRepository implements IUserRepository {
                 String email = resultSet.getString("Email");
                 String role = resultSet.getString("Role");
                 Timestamp createdAt = resultSet.getTimestamp("CreatedAt");
+                String foundUserName = resultSet.getString("Username");
 
-                User user = new User(userId, userName, password, email, role, createdAt);
+
+                User user = new User(userId, foundUserName, password, email, role, createdAt);
                 users.add(user);
             }
         } catch (SQLException ex) {
@@ -131,7 +136,7 @@ public class UserRepository implements IUserRepository {
 
             ResultSet resultSet = stmt.executeQuery();
 
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 int userId = resultSet.getInt("UserID");
                 String password = resultSet.getString("Password");
                 String email = resultSet.getString("Email");
@@ -154,10 +159,7 @@ public class UserRepository implements IUserRepository {
             stmt.setString(1, newPassword);
             stmt.setInt(2, userID);
 
-            int rowsAffected = stmt.executeUpdate();
-            if (rowsAffected > 0) {
-                return rowsAffected; 
-            }
+            return stmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
         }

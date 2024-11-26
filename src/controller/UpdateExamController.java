@@ -8,7 +8,6 @@ package controller;
 import data.Choice;
 import data.Exam;
 import data.Question;
-import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,12 +23,10 @@ import utils.StringProcessor;
  */
 public class UpdateExamController {
     private final ExamRepository examRepository;
-    private final ValidationMarks validMarks;
     private final Connection conn;
 
     public UpdateExamController(Connection conn) {
         this.examRepository = new ExamRepository();
-        this.validMarks = new ValidationMarks();
         this.conn = conn;
     }
 
