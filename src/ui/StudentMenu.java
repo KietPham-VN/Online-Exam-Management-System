@@ -41,12 +41,15 @@ public class StudentMenu {
             switch (choice) {
                 case 1: {
                     examExecuter.runExam(scanner);
+                    break;
                 }
                 case 2: {
                     userController.printStudentGrade(user.getUserID());
+                    break;
                 }
                 case 3: {
                     userController.printResetPassword(user.getUserID());
+                    break;
                 }
                 case 4: {
                     return;

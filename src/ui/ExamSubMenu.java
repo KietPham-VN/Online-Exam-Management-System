@@ -43,14 +43,14 @@ public class ExamSubMenu {
                 case 1:
                     try {
                         createExam.addExam();
-                        break;
+                        
                     } catch (SQLException e) {
                         System.out.println("Failed adding exam: " + e.getMessage());
                     }
+                    break;
                 case 2:
                     try {
                         createExam.addQuestion();
-                        break;
                     } catch (SQLException e) {
                         System.out.println("Failed adding question: " + e.getMessage());
                     }
@@ -59,10 +59,10 @@ public class ExamSubMenu {
                     try {
                         int questionID = Inputter.getAnInteger("Enter the Question ID to add choices: ", "Invalid input.");
                         createExam.addChoices(questionID);
-                        break;
                     } catch (SQLException e) {
                         System.out.println("Falied adding choice: " + e.getMessage());
                     }
+                    break;
                 case 4:
                     System.out.println("Exiting...");
                     return;
@@ -84,24 +84,24 @@ public class ExamSubMenu {
                 case 1:
                     try {
                         updateExam.updateExam();
-                        break;
                     } catch (SQLException e) {
                         System.out.println("Failed updating exam" + e.getMessage());
                     }
+                    break;
                 case 2:
                     try {
                         updateExam.updateQuestion();
-                        break;
                     } catch (SQLException e) {
                         System.out.println("Failed updating question" + e.getMessage());
                     }
+                    break;
                 case 3:
                     try {
                         updateExam.updateChoice();
-                        break;
                     } catch (SQLException e) {
                         System.out.println("Failed updating choice" + e.getMessage());
                     }
+                    break;
                 case 4:
                     System.out.println("Exiting...");
                     return;
@@ -123,24 +123,26 @@ public class ExamSubMenu {
                 case 1:
                     try {
                         deleteExam.deleteExam();
-                        break;
                     } catch (SQLException e) {
                         System.out.println("Failed deleting exam: " + e.getMessage());
                     }
+                    break;
                 case 2:
                     try {
                         deleteExam.deleteQuestion();
-                        break;
+                       
                     } catch (SQLException e) {
                         System.out.println("Failed deleting question: " + e.getMessage());
                     }
+                    break;
                 case 3:
                     try {
                         deleteExam.deleteChoice();
-                        break;
+                        
                     } catch (SQLException e) {
                         System.out.println("Failed deleting choice: " + e.getMessage());
                     }
+                    break;
                 case 4:
                     System.out.println("Exiting...");
                     return;

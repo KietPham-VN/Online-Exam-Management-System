@@ -31,9 +31,11 @@ public class AdminMenu {
             switch(choice){
                 case 1:{
                     userController.printRegister();
+                    break;
                 }
                 case 2:{
                     userController.printResetPassword(user.getUserID());
+                    break;
                 }
                 case 3:{
                     return;
