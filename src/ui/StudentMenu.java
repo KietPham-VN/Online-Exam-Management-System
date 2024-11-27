@@ -31,7 +31,7 @@ public class StudentMenu {
     
     public void Print(Connection conn) throws SQLException{
         while (true) {
-            Menu studentMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Student");
+            Menu studentMenu = new Menu("Welcome back, " + user.getUsername()+" | ID: "+user.getUserID() + " | Mode: Student");
             studentMenu.addNewOption("Do exams");
             studentMenu.addNewOption("View exam grades");
             studentMenu.addNewOption("Reset password");

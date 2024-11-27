@@ -32,7 +32,7 @@ public class InstructorMenu {
 
     public void Print(Connection conn) {
         while (true) {
-            Menu instructorMenu = new Menu("Welcome back, " + user.getUsername() + " | Mode: Instructor");
+            Menu instructorMenu = new Menu("Welcome back, " + user.getUsername()+" | ID: "+user.getUserID() + " | Mode: Instructor");
             instructorMenu.addNewOption("Manage subjects and exams");
             instructorMenu.addNewOption("Assign exams");
             instructorMenu.addNewOption("Reset password");

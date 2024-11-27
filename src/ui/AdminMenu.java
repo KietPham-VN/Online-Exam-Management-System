@@ -22,7 +22,7 @@ public class AdminMenu {
     
     public void Print(){
         while(true){
-            Menu adminMenu = new Menu("Welcome back, "+user.getUsername()+" | Mode: Admin");
+            Menu adminMenu = new Menu("Welcome back, "+user.getUsername()+" | ID: "+user.getUserID()+" | Mode: Admin");
             adminMenu.addNewOption("Create new user");
             adminMenu.addNewOption("Reset password");
             adminMenu.addNewOption("Logout");
