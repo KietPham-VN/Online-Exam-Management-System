@@ -64,6 +64,11 @@ public class User {
     return createdAt;
   }
 
+    @Override
+    public String toString() {
+        return "User: " + "userID=" + userID + ", username=" + username + ", password=" + password + ", email=" + email + ", role=" + role + ", createdAt=" + createdAt ;
+    }
+
   public void setCreatedAt(java.sql.Timestamp createdAt) {
     this.createdAt = createdAt;
   }
